@@ -1,0 +1,24 @@
+{
+    "name": "black75/autoclean",
+    "type": "roundcube-plugin",
+    "description": "Folder configuration parameter. Automatic folder cleaning from old e-mails. Requires external doveadm.",
+    "license": "GPLv3+",
+    "version": "1.0",
+    "authors": [
+        {
+            "name": "Wojciech Bielec",
+            "email": "dev@bielec.net",
+            "role": "Developer"
+        }
+    ],
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "https://plugins.roundcube.net"
+        }
+    ],
+    "require": {
+        "php": ">=7.4",
+        "roundcube/plugin-installer": ">=0.1.3"
+    }
+}
