@@ -1,6 +1,6 @@
 # Autoclean plugin
 
-**Autoclean** is a **Roundcube**, that allows the user to configure automatic cleaning of old messages from folders.
+**Autoclean** is a **Roundcube** plugin, that allows the user to configure automatic cleaning of old messages from folders.
 
 ## Screenshot
 ![Screenshot](scrn.jpg)
@@ -15,9 +15,9 @@
 Please follow these steps and adapt them to your distribution if necessary
 
 1. Place this plugin folder into plugins directory of Roundcube
-2. You can do so either by using `composer` for which there is `composer.json`, still you need to follow further installation steps since those could not be accomplished with `composer`
+2. You can do so either by using `composer`, for which there is `composer.json`, still you need to follow further installation steps, since those could not be accomplished with `composer`
 3. After that you need to enable newly installed plugin by adding it 
-to **Roundcube** plugin list. For **Debian** related config file is `_ROUNDCUBE_FOLDER_/config/config.inc.php` and relevant setting is 
+to **Roundcube** plugin list. For **Debian** the related config file is `_ROUNDCUBE_FOLDER_/config/config.inc.php` and relevant setting are 
 	```php
 		$rcmail_config ['plugins'] = array();
 	```
@@ -31,10 +31,10 @@ to **Roundcube** plugin list. For **Debian** related config file is `_ROUNDCUBE_
 
 
 ## Settings
-In case you need to edit default-set settings, you may copy `config.inc.php.dist` to `config.inc.php` and edit setings as desired in the latter file, which will override defaults.
+In case you need to edit the default settings, you may copy `config.inc.php.dist` to `config.inc.php` and edit setings as desired in the latter file, which will override defaults.
 * `$config['autoclean_interval']` Day interval array
 * `$config['autoclean_trash_folder']` System folder Trash - default: Trash
-* `$config['autoclean_dovecot_server']` (eg. IP address) A real server running dovecot. Access to the dovadm application is required. The connection is made using ssh. If dovecot is on the same server as roundcube, set parameter as null.
+* `$config['autoclean_dovecot_server']` (eg. IP address) A real server running dovecot. Access to the dovadm application is required. The connection is made using ssh. If dovecot is on the same server as roundcube, set the parameter to null.
 * `$config['autoclean_extra_clean']` Additional mandatory folders set by the administrator, performed for ALL users
 
 ## License
