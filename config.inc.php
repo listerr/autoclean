@@ -15,7 +15,7 @@ $config['autoclean_trash_folder'] = 'Trash';
 
 // A real server running dovecot. Access to the dovadm application is required.
 // The connection is made using ssh. 
-// If dovecot is on the same server as roundcube, set parameter as null.
+// If dovecot is on the same server as roundcube, set the parameter to null.
 $config['autoclean_dovecot_server'] = '192.168.0.4';
 
 // extra cleaning command, performed for ALL users
