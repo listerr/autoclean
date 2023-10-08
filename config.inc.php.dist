@@ -34,7 +34,7 @@ $config['autoclean_extra_clean'] =
         [
             'folder' => 'Trash',
             'days' => '730',
-            'before' => 'savebefore',
+            'before' => 'savedbefore',
             'unflagged' => 'unflagged',
         ]
         */

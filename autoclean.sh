@@ -73,8 +73,7 @@ while ($sql_result && ($sql_arr = $db->fetch_assoc($sql_result))) {
                                       $day);
                     }
 
-                  echo dovecotServer($exec, $dovecotServer)."\n";
-                    //exec (dovecotServer($exec, $dovecotServer));
+                    exec (dovecotServer($exec, $dovecotServer));
                 }
         }
 
@@ -83,18 +82,18 @@ while ($sql_result && ($sql_arr = $db->fetch_assoc($sql_result))) {
             foreach($extraClean as $folder)
                {
 
-		    $string = "doveadm mailbox mutf7 -7 '" . $folder['folder'] . "'";
-                    $folderUTF7 = exec(dovecotServer($string, $dovecotServer));
+                  $string = "doveadm mailbox mutf7 -7 '" . $folder['folder'] . "'";
+                              $folderUTF7 = exec(dovecotServer($string, $dovecotServer));
 
-		    $exec = sprintf("doveadm expunge -u %s mailbox '%s' %s %sd %s",
-		    $sql_arr['username'],
-		    $folderUTF7,
-		    $folder['before'],
-		    $folder['days'],
-		    $folder['unflagged'],
-		    );
-                  echo dovecotServer($exec, $dovecotServer)."\n";
-                    //exec (dovecotServer($exec, $dovecotServer));
+                  $exec = sprintf("doveadm expunge -u %s mailbox '%s' %s %sd %s",
+                  $sql_arr['username'],
+                  $folderUTF7,
+                  $folder['before'],
+                  $folder['days'],
+                  $folder['unflagged'],
+                  );
+
+                  exec (dovecotServer($exec, $dovecotServer));
                }
         }
 }
