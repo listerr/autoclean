@@ -3,41 +3,137 @@
 **Autoclean** is a **Roundcube** plugin, that allows the user to configure automatic cleaning of old messages from folders.
 
 ## Screenshot
+
 ![Screenshot](scrn.jpg)
 
 ## Requirements
-* Roundcube
-* dovecot - server IMAP
-* permissions to run **doveadm** 
+
+* [Roundcube](https://www.roundcube.net) (Recommended: 1.6.20 or greater)
+* [dovecot](https://) - server IMAP (Recommended: 2.4.x or greater)
+* permissions to run **doveadm**, or:
+* access to the Dovecot doveadm HTTP API
 * access to **cron**
 
-## Installation
-Please follow these steps and adapt them to your distribution if necessary
+* composer (recommended)
+* PHP 8.1 or greater (recommended)
 
-1. Place this plugin folder into plugins directory of Roundcube
-2. You can do so either by using `composer`, for which there is `composer.json`, still you need to follow further installation steps, since those could not be accomplished with `composer`
-3. After that you need to enable newly installed plugin by adding it 
-to **Roundcube** plugin list. For **Debian** the related config file is `_ROUNDCUBE_FOLDER_/config/config.inc.php` and relevant setting are 
-	```php
-		$rcmail_config ['plugins'] = array();
-	```
-    Appending `, 'autoclean'` to the list of plugins will suffice.
+## Installation
+
+Please follow these steps and adapt them to your distribution if necessary.
+
+1. Place this plugin folder into `./plugins` directory of Roundcube
+2. You can do so either using git clone or `composer`, for which there is `composer.json` (replace `/opt/roundcubemail` with your rouncdube install location):
+
+    ```
+    # cd /opt/roundcubemail
+    # composer require black75/autoclean:dev-master
+    ```
+3. After that, make sure the newly installed plugin is enabled by adding it
+to Roundcube's plugin list. (`./config/config.inc.php`)
+
+    ```php
+    $config['plugins'] = [
+      // other plugins...
+        'autoclean',
+       ];
+   ```
+   Appending `, 'autoclean'` to the list of plugins will suffice.
+
+
+### Debian
+
+   * If using the Debian roundcube package, the related config file is `/etc/roundcube/config.inc.php`.
+   * You can also manually install plugins to: `/var/lib/roundcube/plugins`.
+
+### Cron
+
 4. You can use crontab to autoclean folders users periodically.
+
+
    Just specify an entry like:
-   ```sh
+
+   ```bash
    0 1 * * * _user_ _ROUNDCUBE_FOLDER_/plugins/autoclean/autoclean.sh
    ```
-   `_user_` must have permission to run `doveadm`
+
+   If not using the dovecot doveadm API, `_user_` must have permission to run `doveadm`
 
 
 ## Settings
+
 In case you need to edit the default settings, you may copy `config.inc.php.dist` to `config.inc.php` and edit setings as desired in the latter file, which will override defaults.
-* `$config['autoclean_interval']` Day interval array
-* `$config['autoclean_trash_folder']` System folder Trash - default: Trash
-* `$config['autoclean_dovecot_server']` (eg. IP address) A real server running dovecot. Access to the dovadm application is required. The connection is made using ssh. If dovecot is on the same server as roundcube, set the parameter to null.
-* `$config['autoclean_extra_clean']` Additional mandatory folders set by the administrator, performed for ALL users
+
+   ```
+   # cd /opt/roundcubemail/plugins/autoclean
+   # cp config.inc.php.dist config.inc.php
+   ```
+
+### Using with dovecot doveadm API:
+
+
+
+
+| Option | Description |
+| --- | --- |
+| `$config['autoclean_dovecot_api_url']` | Full doveadm HTTP API endpoint. Example: `https://dovecot.example.org:8443/doveadm/v1`. |
+| `$config['autoclean_dovecot_api_key']` | API key matching Dovecot's `doveadm_api_key`. Both API settings are required. |
+
+### Using with doveadm:
+
+| Option | Description |
+| --- | --- |
+| `$config['autoclean_dovecot_server']` | Dovecot server IP address or hostname. The connection uses SSH. Set it to `null` for local Dovecot. This is ignored when the HTTP API is configured. |
+
+
+### Other options
+
+| Option | Description |
+| --- | --- |
+| `$config['autoclean_interval']` | Day interval array. |
+| `$config['autoclean_trash_folder']` | System Trash folder. Default: `Trash`. |
+| `$config['autoclean_extra_clean']` | Additional mandatory folders configured by the administrator and cleaned for all users. |
+
+
+### Dovecot API configuration
+
+Dovecot configuration files are usually located in `/etc/dovecot/conf.d`
+
+Example file: `/etc/dovecot/conf.d/10-doveadm.conf` (Works with Dovecot 2.4.x):
+
+```
+doveadm_api_key  = <YOUR_API_KEY>
+
+service doveadm {
+  unix_listener doveadm-server {
+    user = vmail
+  }
+
+  inet_listener doveadm {
+    port = 2425
+  }
+
+  inet_listener http {
+    port = 8443
+    ssl = yes
+    #listen = 127.0.0.1 ::1
+  }
+
+}
+
+```
+
+See also: https://doc.dovecot.org/latest/core/admin/doveadm.html#http-api
+
+> IMPORTANT
+> Make sure the doveadm ports are firewalled to allow only trusted access.
+
+NOTE: PHP validates SSL certificates by default. If you enable ssl, the hostname in the SSL certificate 
+must match the name given in the URL. (e.g. If will not work if you connect as "https://localhost" but the 
+certificate contains the actual name.)
+
 
 ## License
+
 This software distributed under the terms of the GNU General Public License as published by the Free Software Foundation
 
 Further details on the GPL license can be found at http://www.gnu.org/licenses/gpl.html
