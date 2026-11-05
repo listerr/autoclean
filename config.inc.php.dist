@@ -14,10 +14,17 @@ $config['autoclean_interval'] = [3,7,14,21,30,60,90,180,365,730,1826];
 // System folder Trash - default: Trash
 $config['autoclean_trash_folder'] = 'Trash';
 
-// A real server running dovecot. Access to the dovadm application is required.
-// The connection is made using ssh. 
-// If dovecot is on the same server as roundcube, set the parameter to null.
+
+// How to access dovecot/doveadm?
+
+// To run doveadm on the same server as roundcube, set the parameter to null.
 $config['autoclean_dovecot_server'] = '192.168.0.4';
+
+// Dovecot doveadm HTTP API. 
+// When both values are set, the HTTP API is used instead of doveadm / ssh
+
+// $config['autoclean_dovecot_api_url'] = 'https://your.dovecot.server:8443/doveadm/v1';
+// $config['autoclean_dovecot_api_key'] = '<YOUR_DOVEADM_API_KEY>';
 
 // extra cleaning command, performed for ALL users
 $config['autoclean_extra_clean'] =
@@ -27,7 +34,7 @@ $config['autoclean_extra_clean'] =
         [
             'folder' => 'Spam',       // folder name
             'days' => '60',           // number of days
-            'before' => 'sentbefore', // 'sentbefore' or 'savebefore'
+            'before' => 'sentbefore', // 'sentbefore' or 'savedbefore'
             'unflagged' => '',        // 'unflagged' or empty
         ],
         // delete trash e-mails older than 2 year (730 days)
